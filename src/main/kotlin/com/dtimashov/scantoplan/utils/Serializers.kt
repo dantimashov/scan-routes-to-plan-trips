@@ -5,12 +5,28 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.encoding.Decoder
 import java.time.Duration
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 /**
  * @author daniil.timashov on 15.04.2023
  */
+
+@OptIn(ExperimentalSerializationApi::class)
+@Serializer(forClass = LocalDateTime::class)
+object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
+
+    private val applicationTimeFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+
+    override fun deserialize(decoder: Decoder): LocalDateTime {
+        return LocalDateTime.parse(decoder.decodeString(), applicationTimeFormat)
+    }
+
+    override fun serialize(encoder: kotlinx.serialization.encoding.Encoder, value: LocalDateTime) {
+        encoder.encodeString(value.format(applicationTimeFormat))
+    }
+}
 
 @OptIn(ExperimentalSerializationApi::class)
 @Serializer(forClass = LocalTime::class)

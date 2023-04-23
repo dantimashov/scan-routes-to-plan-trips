@@ -27,7 +27,7 @@ class RouteFilters {
         }}
 
         fun byDepartureTime(from : LocalTime, to: LocalTime) = apply { filters.add {
-                route -> route.departureTime.isAfter(from) && route.departureTime.isBefore(to)
+                route -> route.departureTime.toLocalTime().isAfter(from) && route.departureTime.toLocalTime().isBefore(to)
         }}
 
         fun byPrice(min : Int, max: Int) = apply { filters.add {
