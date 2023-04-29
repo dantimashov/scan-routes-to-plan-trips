@@ -6,4 +6,13 @@ import kotlinx.serialization.Serializable
  * @author daniil.timashov on 25.02.2023
  */
 @Serializable
-data class Place(val name: String, val locatedAt: Place?)
+data class Place(val id: String, val name: String, val locatedAt: Place?) {
+
+    override fun equals(other: Any?): Boolean {
+        return (other is Place) && other.id == id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+}

@@ -9,6 +9,6 @@ import java.time.LocalDateTime
  */
 interface RoutesApiClient {
 
-    fun search(departure: Place, from: LocalDateTime, to: LocalDateTime): List<Route>
+    fun search(departure: Place, destination: Place, from: LocalDateTime, to: LocalDateTime): List<Route>
 
 }
