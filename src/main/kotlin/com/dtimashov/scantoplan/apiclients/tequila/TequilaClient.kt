@@ -35,10 +35,11 @@ class TequilaClient {
                 .build()
             chain.proceed(requestWithApiKey)
         }.build()
+        private val jsonConverter = Json { ignoreUnknownKeys = true }
         val client: Retrofit = Retrofit.Builder()
             .baseUrl(ClientConfig.HOST)
             .client(clientWithApiKey)
-            .addConverterFactory(Json.asConverterFactory(MediaType.get("application/json")))
+            .addConverterFactory(jsonConverter.asConverterFactory(MediaType.get("application/json")))
             .build()
     }
 }
