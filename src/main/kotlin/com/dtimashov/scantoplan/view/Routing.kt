@@ -1,8 +1,11 @@
 package com.dtimashov.scantoplan.view
 
 import com.dtimashov.scantoplan.application.FlightsFromCityModule
+import com.dtimashov.scantoplan.business.models.Place
+import com.dtimashov.scantoplan.business.models.RoutesSearch
 import com.dtimashov.scantoplan.business.services.RouteFilters
 import com.dtimashov.scantoplan.view.dto.FiltersDTO
+import com.dtimashov.scantoplan.view.dto.SearchDTO
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.application.*
@@ -26,11 +29,13 @@ fun Application.routesRouting() {
         }
 
         post("/routes") {
-            val requestBody = call.receive<FiltersDTO>()
-            val flightsFromCityModule = FlightsFromCityModule()
+            val requestBody = call.receive<SearchDTO>()
+            val searchQuery = RoutesSearch(Place(requestBody.departureId), Place(requestBody.destinationId), requestBody.fromDate, requestBody.toDate)
             val filtersBuilder = RouteFilters().Builder()
-            setFiltersIfExist(filtersBuilder, requestBody)
-            call.respond(flightsFromCityModule.routesByFilter(filtersBuilder.build()))
+            setFiltersIfExist(filtersBuilder, requestBody.filters)
+            val flightsFromCityModule = FlightsFromCityModule()
+            call.respond(flightsFromCityModule.routesByFilter(searchQuery, filtersBuilder.build())
+            )
         }
 
     }

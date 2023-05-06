@@ -1,6 +1,9 @@
 package com.dtimashov.scantoplan.application
 
+import com.dtimashov.scantoplan.apiclients.RoutesApiClient
+import com.dtimashov.scantoplan.apiclients.RoutesApiClientImpl
 import com.dtimashov.scantoplan.business.models.Route
+import com.dtimashov.scantoplan.business.models.RoutesSearch
 import com.dtimashov.scantoplan.business.services.RouteFilters
 
 /**
@@ -8,8 +11,9 @@ import com.dtimashov.scantoplan.business.services.RouteFilters
  */
 class FlightsFromCityModule {
 
-    fun routesByFilter(filterService: RouteFilters): List<Route> {
-        val routes = listOf<Route>() // TODO implement getting and filtering data
+    fun routesByFilter(query : RoutesSearch, filterService: RouteFilters): List<Route> {
+        val client: RoutesApiClient = RoutesApiClientImpl()
+        val routes = client.search(query.departure, query.destination, query.fromDate, query.toDate)
         return filterService.filter(routes)
     }
 
