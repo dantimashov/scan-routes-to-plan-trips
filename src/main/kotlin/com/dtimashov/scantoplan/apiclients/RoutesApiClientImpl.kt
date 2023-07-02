@@ -6,14 +6,13 @@ import com.dtimashov.scantoplan.apiclients.tequila.fromTequilaDateFormat
 import com.dtimashov.scantoplan.apiclients.tequila.toTequilaDateFormat
 import com.dtimashov.scantoplan.business.models.Place
 import com.dtimashov.scantoplan.business.models.Route
-import retrofit2.Call
 import java.time.Duration
 import java.time.LocalDate
 
 /**
  * @author daniil.timashov on 04.03.2023
  */
-class RoutesApiClientImpl : RoutesApiClient {
+class RoutesApiClientImpl : RoutesApiClient, BaseApiClient() {
 
     private val searchClient: SearchClient = TequilaClient.ClientProvider.client.create(SearchClient::class.java)
 
@@ -28,10 +27,6 @@ class RoutesApiClientImpl : RoutesApiClient {
                 fromTequilaDateFormat(it.localDeparture), fromTequilaDateFormat(it.localArrival),
                 Duration.ofSeconds(it.duration.totalSeconds.toLong())
             ) }
-    }
-
-    private fun <T> withSuccessfulResult(call: Call<T>) : T {
-        return call.execute().body()!! // TODO handle IOException and empty body
     }
 
 }
